@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Snapcard" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.SnapCard.SplashScreen" parent="Theme.SplashScreen" tools:ignore="ResourceCycle">
+        <item name="windowSplashScreenBackground">#0F172A</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.Snapcard</item>
+    </style>
+</resources>
