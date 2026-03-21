@@ -67,7 +67,8 @@ object AppModule {
     fun provideApiService(client: OkHttpClient): ApiService {
         return Retrofit.Builder()
             //.baseUrl("http://192.168.31.88:8000/")
-            .baseUrl("http://192.168.0.100:8000/")
+            //.baseUrl("http://192.168.0.100:8000/")
+            .baseUrl("http://192.168.31.88:8000/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
