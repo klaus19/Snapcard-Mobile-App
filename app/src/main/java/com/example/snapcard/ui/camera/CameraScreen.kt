@@ -65,7 +65,16 @@ fun CameraScreen(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success && photoUri != null) {
-            viewModel.generateFlashcards(photoUri!!)
+            // Verify the image actually has content
+            val size = context.contentResolver.openInputStream(photoUri!!)?.use {
+                it.available()
+            } ?: 0
+            if (size > 0) {
+                viewModel.generateFlashcards(photoUri!!)
+            } else {
+                // Camera saved an empty file
+                viewModel.generateFlashcards(photoUri!!) // still try, let error handling catch it
+            }
         }
     }
 
@@ -79,7 +88,11 @@ fun CameraScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (granted) {
-            val file = File(context.cacheDir, "snapcard_photo.jpg")
+            val file = File.createTempFile(
+                "snapcard_${System.currentTimeMillis()}",
+                ".jpg",
+                context.cacheDir
+            )
             val uri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.provider",
@@ -148,7 +161,11 @@ fun CameraScreen(
                             ) == PackageManager.PERMISSION_GRANTED
 
                             if (hasCameraPermission) {
-                                val file = File(context.cacheDir, "snapcard_photo.jpg")
+                                val file = File.createTempFile(
+                                    "snapcard_${System.currentTimeMillis()}",
+                                    ".jpg",
+                                    context.cacheDir
+                                )
                                 val uri = FileProvider.getUriForFile(
                                     context,
                                     "${context.packageName}.provider",
