@@ -69,7 +69,7 @@ object AppModule {
         return Retrofit.Builder()
             //.baseUrl("http://192.168.31.88:8000/")
             //.baseUrl("http://192.168.0.100:8000/")
-            .baseUrl("http://192.168.31.88:8000/")
+            .baseUrl("https://snapcard-production.up.railway.app/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
