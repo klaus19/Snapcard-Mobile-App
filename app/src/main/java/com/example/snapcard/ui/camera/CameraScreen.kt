@@ -105,7 +105,7 @@ fun CameraScreen(
 
     LaunchedEffect(uiState) {
         if (uiState is FlashcardUiState.Success) {
-            navController.navigate(Screen.Flashcards.route)
+            navController.navigate(Screen.NewFlashcards.route)
         }
     }
 
