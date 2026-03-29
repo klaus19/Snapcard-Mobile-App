@@ -3,7 +3,6 @@ package com.example.snapcard.ui.home
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -22,29 +20,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.snapcard.auth.AuthUiState
-import com.example.snapcard.auth.AuthViewModel
 import com.example.snapcard.navigation.Screen
 
 // ── Light Color Palette ────────────────────────────────────────
 private val LightBg = Color(0xFFF8F9FC)
 private val WarmWhite = Color(0xFFFFFFFF)
 private val Indigo = Color(0xFF6366F1)
-private val IndigoBorder = Color(0xFFC7D2FE)    // indigo-200
+private val IndigoBorder = Color(0xFFC7D2FE)
 private val Violet = Color(0xFF8B5CF6)
 private val Purple = Color(0xFFA855F7)
 private val Amber = Color(0xFFF59E0B)
 private val Orange = Color(0xFFF97316)
-private val TextDark = Color(0xFF1E1B4B)         // indigo-950
-private val TextBody = Color(0xFF4B5563)         // gray-600
-private val TextMuted = Color(0xFF9CA3AF)        // gray-400
+private val TextDark = Color(0xFF1E1B4B)
+private val TextBody = Color(0xFF4B5563)
+private val TextMuted = Color(0xFF9CA3AF)
 private val CardBg = Color(0xFFFFFFFF)
-private val CardBorder = Color(0xFFF3F4F6)       // gray-100
-private val FeatureLabel = Color(0xFF312E81)     // indigo-900
-private val FeatureDesc = Color(0xFF6B7280)      // gray-500
-private val SoftShadow = Color(0x0D6366F1)       // indigo at ~5%
+private val CardBorder = Color(0xFFF3F4F6)
+private val FeatureLabel = Color(0xFF312E81)
+private val FeatureDesc = Color(0xFF6B7280)
+private val SoftShadow = Color(0x0D6366F1)
 
 // ── Feature Data ───────────────────────────────────────────────
 private data class Feature(
@@ -60,11 +55,12 @@ private val features = listOf(
     Feature("💡", "With Hints", "Built-in learning aids"),
 )
 
+private val EaseInOutSine = CubicBezierEasing(0.37f, 0f, 0.63f, 1f)
+
 // ── Home Screen ────────────────────────────────────────────────
 @Composable
-fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController) {
 
-    // Float animation for camera icon
     val infiniteTransition = rememberInfiniteTransition(label = "float")
     val floatOffset by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -76,7 +72,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
         label = "floatY"
     )
 
-    // Gradient shift for button
     val gradientPhase by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -92,7 +87,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
             .fillMaxSize()
             .background(LightBg)
     ) {
-        // Soft ambient indigo glow
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -121,45 +115,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
-            val authState by authViewModel.uiState.collectAsState()
-            val userName = (authState as? AuthUiState.SignedIn)?.user?.displayName?.split(" ")?.firstOrNull() ?: "User"
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Hi, $userName",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = TextBody
-                )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(CardBg)
-                        .border(1.dp, CardBorder, RoundedCornerShape(10.dp))
-                        .clickable {
-                            authViewModel.signOut()
-                            navController.navigate("login") {
-                                popUpTo(0) { inclusive = true }
-                            }
-                        }
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                ) {
-                    Text(
-                        text = "Sign Out",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = TextBody
-                    )
-                }
-            }
-
             // ── Camera Icon ────────────────────────────────
             Box(
                 contentAlignment = Alignment.Center,
@@ -186,7 +141,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
                     Text(text = "📷", fontSize = 40.sp)
                 }
 
-                // Sparkle badge
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -211,7 +165,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // ── App Title ──────────────────────────────────
             Text(
                 text = "SnapCard",
                 fontSize = 36.sp,
@@ -222,7 +175,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // ── Tagline ────────────────────────────────────
             Text(
                 text = "Snap a textbook page.\nGet instant AI flashcards.",
                 fontSize = 15.sp,
@@ -233,7 +185,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
 
             Spacer(modifier = Modifier.height(36.dp))
 
-            // ── Feature Grid (2×2) ─────────────────────────
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 for (row in features.chunked(2)) {
                     Row(
@@ -252,7 +203,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // ── CTA Button ─────────────────────────────────
             val buttonGradient = Brush.linearGradient(
                 colors = if (gradientPhase < 0.5f)
                     listOf(Indigo, Violet, Purple)
@@ -272,9 +222,7 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
                         spotColor = Indigo.copy(alpha = 0.2f)
                     ),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                ),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 contentPadding = PaddingValues()
             ) {
                 Box(
@@ -295,7 +243,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // ── Helper text ────────────────────────────────
             Text(
                 text = "Supports textbooks, notes & handwritten pages",
                 fontSize = 12.sp,
@@ -306,7 +253,6 @@ fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltV
     }
 }
 
-// ── Feature Card Composable ────────────────────────────────────
 @Composable
 private fun FeatureCard(
     feature: Feature,
@@ -350,5 +296,3 @@ private fun FeatureCard(
         }
     }
 }
-
-private val EaseInOutSine = CubicBezierEasing(0.37f, 0f, 0.63f, 1f)
