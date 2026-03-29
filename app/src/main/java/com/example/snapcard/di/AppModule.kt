@@ -10,6 +10,7 @@ import com.example.snapcard.db.FlashcardSetDao
 import com.example.snapcard.db.SnapCardDatabase
 import com.example.snapcard.db.StudySessionDao
 import com.example.snapcard.network.ApiService
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -84,4 +85,9 @@ object AppModule {
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return context.dataStore
     }
+
+    // Add inside the AppModule object:
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 }

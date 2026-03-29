@@ -3,6 +3,7 @@ package com.example.snapcard.ui.home
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.snapcard.auth.AuthUiState
+import com.example.snapcard.auth.AuthViewModel
 import com.example.snapcard.navigation.Screen
 
 // ── Light Color Palette ────────────────────────────────────────
@@ -58,7 +62,7 @@ private val features = listOf(
 
 // ── Home Screen ────────────────────────────────────────────────
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController,authViewModel: AuthViewModel = hiltViewModel()) {
 
     // Float animation for camera icon
     val infiniteTransition = rememberInfiniteTransition(label = "float")
@@ -117,6 +121,44 @@ fun HomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+
+            val authState by authViewModel.uiState.collectAsState()
+            val userName = (authState as? AuthUiState.SignedIn)?.user?.displayName?.split(" ")?.firstOrNull() ?: "User"
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Hi, $userName",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = TextBody
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(CardBg)
+                        .border(1.dp, CardBorder, RoundedCornerShape(10.dp))
+                        .clickable {
+                            authViewModel.signOut()
+                            navController.navigate("login") {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        text = "Sign Out",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = TextBody
+                    )
+                }
+            }
 
             // ── Camera Icon ────────────────────────────────
             Box(

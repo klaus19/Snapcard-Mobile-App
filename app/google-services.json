@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "24197276527",
+    "project_id": "snapcard-ba19a",
+    "storage_bucket": "snapcard-ba19a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24197276527:android:a580609600d97710ef7e9a",
+        "android_client_info": {
+          "package_name": "com.example.snapcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24197276527-3jg9rr12905hs4ho2rnp9agqhk54k6pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.snapcard",
+            "certificate_hash": "3d5af0f80f36059b7ae0ca238419c2bc39d9017b"
+          }
+        },
+        {
+          "client_id": "24197276527-aq3ju4iq5csijbsj9u7imivbeccii87v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNETHWZyUT_sJZ9c3h7NQ5fqEBXHnHt_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24197276527-aq3ju4iq5csijbsj9u7imivbeccii87v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -5,6 +7,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -73,4 +76,20 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose.v130)
 
+
+    // Credential Manager (modern Google Sign-In)
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation(libs.googleid)
+
+    // Firebase BOM (always first)
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+
+// Firebase Auth
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+// Analytics (optional)
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
 }
+
